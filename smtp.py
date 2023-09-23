@@ -12,6 +12,10 @@ mailport = 8025 # "fill me in"
 
 # Create socket called clientSocket and establish a TCP connection with mailserver
 #Fill in start
+clientSocket = socket(AF_INET, SOCK_STREAM)# Creating the socket.
+clientSocket.connect((mailserver, mailport)) # Telling the socket where we are connecting to.
+
+
 #Fill in end
 
 # NOTE: you should write better handling for return messages. The
