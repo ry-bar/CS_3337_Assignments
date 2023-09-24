@@ -120,5 +120,4 @@ recv6 = clientSocket.recv(1024).decode()
 print(f"quitCommand:\n\t{recv6}")
 if recv6[:3] != '221':
     print("221 response not received from the server.")
-
 # Fill in end
