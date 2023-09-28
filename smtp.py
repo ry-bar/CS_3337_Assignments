@@ -1,17 +1,23 @@
 from socket import *
 
 
+# Empty array to store output from the server to put into logfile.txt
+toLogfile = []
+# To enable/disable print statements.
+printStatements = False # True or False
+
+
 # This is not a well-formed email message (see RFC2822)
 msg = ("From: futurefriend@gmail.com\r\n"
        "To: wrigjaso@isu.edu\r\n"
        "Subject: Urgent!\r\n"
        "Date: Sun, 16 February 2020 15:20:00 -0700\r\n"
        "\r\n"# An empty line to separate the header from the body.
-       "I have urgent information from the future for you. I've recently learned how dependable and reliable SMTP "
-       "protocol is. I have no doubt, unless for some strange reason this email is carelessly deleted immediately "
-       "upon receipt, that you will be able to act upon the information you are about to receive. In just a little "
-       "over one month toilet paper will become scarce and nearly unobtainable. Please, heed my warning and stock up "
-       "now, before it is too late. There is no point in both of us being caught off guard in these dark times."
+       "I have urgent information from the future for you. I've recently learned how dependable and reliable SMTP\n"
+       "protocol is. I have no doubt, unless for some strange reason this email is carelessly deleted immediately\n"
+       "upon receipt, that you will be able to act upon the information you are about to receive. In just a little\n"
+       "over one month toilet paper will become scarce and nearly unobtainable. Please, heed my warning and stock up\n"
+       "now, before it is too late. There is no point in both of us being caught off guard in these dark times.\n"
        "\n"
        "With care,\n"
        "You're friend from the future"
@@ -37,16 +43,31 @@ clientSocket.connect((mailserver, mailport)) # Telling the socket where we are c
 # Please consult RFC5321 for details.
 
 recv = clientSocket.recv(1024).decode()
-print(f"Connecting:\n\t{recv}")
-if recv[:3] != '220':
-    print('220 reply not received from server.')
+toLogfile.append("Attempting to connect to the server\n")
+toLogfile.append(f"\t{recv}")
+toLogfile.append("\n")# Adding spacing to make it easier to read.
+toLogfile.append("-"*110)
+toLogfile.append("\n")
+
+if printStatements:
+    print(f"Connecting:\n\t{recv}")
+    if recv[:3] != '220':
+        print('220 reply not received from server.')
+
 # Send HELO command and print server response.
 heloCommand = 'HELO Alice\r\n'
 clientSocket.send(heloCommand.encode())
 recv1 = clientSocket.recv(1024).decode()
-print(f"heloCommand:\n\t{recv1}")
-if recv1[:3] != '250':
-    print('250 reply not received from server.')
+toLogfile.append(heloCommand)
+toLogfile.append(f"\t{recv1}")
+toLogfile.append("\n")# Adding spacing to make it easier to read.
+toLogfile.append("-"*110)
+toLogfile.append("\n")
+
+if printStatements:
+    print(f"heloCommand:\n\t{recv1}")
+    if recv1[:3] != '250':
+        print('250 reply not received from server.')
 
 
 
@@ -59,9 +80,16 @@ clientSocket.send(mailFromCommand.encode())# Sending it to the server. encode() 
 
 # Using the same structure from the code given above from Professor Wright.
 recv2 = clientSocket.recv(1024).decode()# decode() takes it out of bytes
-print(f"mailFromCommand:\n\t{recv2}")
-if recv2[:3] != '250':
-    print('250 reply not received from server.')
+toLogfile.append(mailFromCommand)
+toLogfile.append(f"\t{recv2}")
+toLogfile.append("\n")# Adding spacing to make it easier to read.
+toLogfile.append("-"*110)
+toLogfile.append("\n")
+
+if printStatements:
+    print(f"mailFromCommand:\n\t{recv2}")
+    if recv2[:3] != '250':
+        print('250 reply not received from server.')
 # Fill in end
 
 
@@ -74,9 +102,16 @@ clientSocket.send(rcptToCommand.encode())# Sending it to the server. encode() ch
 
 # Following the same structure from the code given above from Professor Wright
 recv3 = clientSocket.recv(1024).decode()# decode() takes it out of bytes
-print(f"rcptToCommand:\n\t{recv2}")
-if recv3[:3] != '250':
-    print('250 reply not received from server.')
+toLogfile.append(rcptToCommand)
+toLogfile.append(f"\t{recv3}")
+toLogfile.append("\n")# Adding spacing to make it easier to read.
+toLogfile.append("-"*110)
+toLogfile.append("\n")
+
+if printStatements:
+    print(f"rcptToCommand:\n\t{recv2}")
+    if recv3[:3] != '250':
+        print('250 reply not received from server.')
 # Fill in end
 
 
@@ -87,9 +122,16 @@ clientSocket.send(dataCommand.encode())# This is what will be sent to the server
 
 # Following the same structure from the code given above from Professor Wright
 recv4 = clientSocket.recv(1024).decode()
-print(f"dataCommand:\n\t{recv4}")
-if recv4[:3] != '354':
-    print('354 response not received from server.k')
+toLogfile.append(dataCommand)
+toLogfile.append(f"\t{recv4}")
+toLogfile.append("\n")# Adding spacing to make it easier to read.
+toLogfile.append("-"*110)
+toLogfile.append("\n")
+
+if printStatements:
+    print(f"dataCommand:\n\t{recv4}")
+    if recv4[:3] != '354':
+        print('354 response not received from server.k')
 
 # Fill in end
 
@@ -104,9 +146,17 @@ clientSocket.send(msg.encode())# Sending the email
 clientSocket.send(endmsg.encode())# Ending the email
 
 recv5 = clientSocket.recv(1024).decode()
-print(f"endmsg:\n\t{recv5}")
-if recv5[:3] != '250':
-    print('250 response not received from server.')
+toLogfile.append(msg)
+toLogfile.append(endmsg)
+toLogfile.append(f"\t{recv5}")
+toLogfile.append("\n")# Adding spacing to make it easier to read.
+toLogfile.append("-"*110)
+toLogfile.append("\n")
+
+if printStatements:
+    print(f"endmsg:\n\t{recv5}")
+    if recv5[:3] != '250':
+        print('250 response not received from server.')
 # Fill in end
 
 
@@ -117,7 +167,22 @@ clientSocket.send(quitCommand.encode())# This is what will be sent to the server
 
 # Following the same structure from the code given above from Professor Wright
 recv6 = clientSocket.recv(1024).decode()
-print(f"quitCommand:\n\t{recv6}")
-if recv6[:3] != '221':
-    print("221 response not received from the server.")
+toLogfile.append(quitCommand)
+toLogfile.append(f"\t{recv6}")
+toLogfile.append("\n")# Adding spacing to make it easier to read.
+toLogfile.append("-"*110)
+toLogfile.append("\n")
+
+if printStatements:
+    print(f"quitCommand:\n\t{recv6}")
+    if recv6[:3] != '221':
+        print("221 response not received from the server.")
 # Fill in end
+
+
+# Writing to the logfile.txt file.
+with open('logfile.txt', 'w') as f:
+    for log in toLogfile:
+        f.write(log)
+
+
