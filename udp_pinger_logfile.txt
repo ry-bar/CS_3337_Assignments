@@ -1,0 +1,32 @@
+Ping 1:timed out
+
+Ping 2 RTT:51.171 ms
+Message: whats the difference between udp and
+
+Ping 3 RTT:43.209 ms
+Message: whats the difference between udp and
+
+Ping 4:timed out
+
+Ping 5:timed out
+
+Ping 6 RTT:47.777 ms
+Message: whats the difference between udp and
+
+Ping 7 RTT:52.306 ms
+Message: whats the difference between udp and
+
+Ping 8 RTT:46.834 ms
+Message: whats the difference between udp and
+
+Ping 9:timed out
+
+Ping 10 RTT:44.786 ms
+Message: whats the difference between udp and
+
+
+
+Maximum RTT: 52.306 ms
+Minimum RTT: 43.209 ms
+Average RTT: 47.68 ms
+Packet loss percentage: 40.0%

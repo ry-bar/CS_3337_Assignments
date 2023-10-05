@@ -181,7 +181,7 @@ if printStatements:
 
 
 # Writing to the logfile.txt file.
-with open('logfile.txt', 'w') as f:
+with open('SMTP_logfile.txt', 'w') as f:
     for log in toLogfile:
         f.write(log)
 
